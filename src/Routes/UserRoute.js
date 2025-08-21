@@ -27,4 +27,16 @@ module.exports = [
         }
 
     },
+
+    {
+        method: 'GET',
+        path: '/me',
+        options: {
+            tags: ['api', 'user'],
+            description: "Profile",
+            handler: controller.myProfile,
+            pre: [Authentication],
+        }
+
+    },
 ]

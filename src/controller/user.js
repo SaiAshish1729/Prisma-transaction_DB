@@ -29,31 +29,6 @@ const createUser = async (req, h) => {
     }
 };
 
-// const createUser = async (req, h) => {
-//     const start = Date.now();
-//     try {
-//         const { name, email, password } = req.payload;
-
-//         console.log("⏱ Step 1:", Date.now() - start, "ms - payload received");
-
-//         const existingUser = await prisma.user.findFirst({ where: { email } });
-//         console.log("⏱ Step 2:", Date.now() - start, "ms - after DB findFirst");
-
-//         const hashedPassword = await bcrypt.hash(password, 6);
-//         console.log("⏱ Step 3:", Date.now() - start, "ms - after bcrypt.hash");
-
-//         const user = await prisma.user.create({
-//             data: { name, email, password: hashedPassword }
-//         });
-//         console.log("⏱ Step 4:", Date.now() - start, "ms - after DB create");
-
-//         return h.response({ success: true, message: "User created", data: user });
-//     } catch (error) {
-//         console.error(error);
-//         return h.response({ message: "Something went wrong" }).code(500);
-//     }
-// };
-
 
 const userLogin = async (req, h) => {
     try {
@@ -84,7 +59,18 @@ const userLogin = async (req, h) => {
     }
 }
 
+const myProfile = async (req, h) => {
+    try {
+        const user = req.rootUser
+        console.log(user);
+        return h.response({ success: true, data: user }).code(200);
+    } catch (error) {
+        console.log(error);
+        return h.response({ message: "Something went wrong", error: error }).code(500);
+    }
+}
 module.exports = {
     createUser,
-    userLogin
+    userLogin,
+    myProfile
 }

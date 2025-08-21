@@ -3,19 +3,19 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "cockroachdb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id         BigInt    @id @default(autoincrement())
-  name       String
-  email      String
-  password   String
-  created_at DateTime  @default(now()) @db.DateTime(6)
-  updated_at DateTime? @updatedAt @db.DateTime(6)
-  deleted_at DateTime? @db.DateTime(6)
+  id        BigInt    @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @updatedAt @db.Timestamp(6)
+  deletedAt DateTime? @db.Timestamp(6)
 
-  @@index([id], map: "__SHARDKEY")
+  @@index([email], name: "idx_users_email")
   @@map("users")
 }

@@ -17,11 +17,22 @@ const server = Hapi.server({
 const init = async () => {
     const swaggerOptions = {
         info: {
-            title: 'OrderBook API Documentation',
+            title: 'Bussiness_DB API Documentation',
             version: Pack.version,
         },
         schemes: ['http', 'https'],
-        grouping: 'tags'
+        grouping: 'tags',
+        // consumes: ['multipart/form-data'],
+        consumes: ['application/json'],
+        produces: ['application/json'],
+        securityDefinitions: {
+            jwt: {
+                type: 'apiKey',
+                name: 'Authorization',
+                in: 'header',
+                description: 'JWT authorization header using the Bearer scheme'
+            }
+        }
     }
 
     server.route({
@@ -38,7 +49,10 @@ const init = async () => {
         Vision,
         {
             plugin: HapiSwagger,
-            options: swaggerOptions
+            options: {
+                ...swaggerOptions,
+                security: [{ jwt: [] }]
+            }
         }
     ])
 
