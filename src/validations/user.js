@@ -6,6 +6,9 @@ const createUserValidation = {
         name: Joi.string().required().label('name'),
         email: Joi.string().required().label('email'),
         password: Joi.string().required().label('password'),
+        eth_balance: Joi.string().optional().allow("").label('eth_balance'),
+        usd_balance: Joi.string().required().label('usd_balance'),
+        kanch_balance: Joi.string().required().label('kanch_balance')
     })
 };
 

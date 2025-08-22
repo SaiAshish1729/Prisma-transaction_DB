@@ -5,7 +5,7 @@ const SECRET = process.env.SECRET
 
 const createUser = async (req, h) => {
     try {
-        const { name, email, password, } = req.payload;
+        const { name, email, password, eth_balance, usd_balance, kanch_balance } = req.payload;
 
         const existingUser = await prisma.user.findFirst({
             where: {
@@ -18,7 +18,7 @@ const createUser = async (req, h) => {
         const hashedPassword = await bcrypt.hash(password, 6);
         const user = await prisma.user.create({
             data: {
-                name, email, password: hashedPassword,
+                name, email, password: hashedPassword, eth_balance, usd_balance, kanch_balance
             }
         });
 
@@ -48,7 +48,7 @@ const userLogin = async (req, h) => {
             return h.response({ message: "Invalid password" });
         }
         const token = jwt.sign({ email: user.email }, SECRET, {
-            expiresIn: "1d"
+            expiresIn: "5d"
         });
 
         return h.response({ message: "Login sucessfully", data: user, token: token }).code(200);
