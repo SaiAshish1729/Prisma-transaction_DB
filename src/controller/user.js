@@ -62,7 +62,6 @@ const userLogin = async (req, h) => {
 const myProfile = async (req, h) => {
     try {
         const user = req.rootUser
-        console.log(user);
         return h.response({ success: true, data: user }).code(200);
     } catch (error) {
         console.log(error);
