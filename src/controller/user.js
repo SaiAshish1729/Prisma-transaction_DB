@@ -5,7 +5,7 @@ const SECRET = process.env.SECRET
 
 const createUser = async (req, h) => {
     try {
-        const { name, email, password, eth_balance, usd_balance, kanch_balance } = req.payload;
+        const { name, email, password, } = req.payload;
 
         const existingUser = await prisma.user.findFirst({
             where: {
@@ -18,11 +18,11 @@ const createUser = async (req, h) => {
         const hashedPassword = await bcrypt.hash(password, 6);
         const user = await prisma.user.create({
             data: {
-                name, email, password: hashedPassword, eth_balance, usd_balance, kanch_balance
+                name, email, password: hashedPassword
             }
         });
 
-        return h.response({ success: true, message: "User created successfully", data: user });
+        return h.response({ success: true, message: "User created successfully", data: user }).code(201);
     } catch (error) {
         console.error("CreateUser Error:", error.message, error.stack, error.code || "");
         return h.response({ message: "Something went wrong", error: error.message }).code(500);
@@ -51,7 +51,7 @@ const userLogin = async (req, h) => {
             expiresIn: "5d"
         });
 
-        return h.response({ message: "Login sucessfully", data: user, token: token }).code(200);
+        return h.response({ message: "Login sucessfully", token: token, data: user, }).code(200);
 
     } catch (error) {
         console.error("loginUser Error:", JSON.stringify(error, null, 2));

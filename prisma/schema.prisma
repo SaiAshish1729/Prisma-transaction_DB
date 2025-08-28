@@ -3,22 +3,29 @@ generator client {
 }
 
 datasource db {
-  provider = "cockroachdb"
+  // provider = "cockroachdb"
+  provider = "mysql"
   url      = env("DATABASE_URL")
-  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Asset_Pair {
+  id         BigInt  @id @default(autoincrement())
+  asset_pair String
+  pair_slug  String?
+
+  createdAt DateTime    @default(now()) @db.Timestamp(6)
+  updatedAt DateTime?   @updatedAt @db.Timestamp(6)
+  deletedAt DateTime?   @db.Timestamp(6)
+  OrderBook OrderBook[]
+
+  @@map("asset_pairs")
 }
 
 model User {
-  id            BigInt @id @default(autoincrement())
-  name          String
-  email         String @unique
-  password      String
-  eth_balance   String
-  usd_balance   String
-  kanch_balance String
-
-  buyOrders  OrderBook[] @relation("BuyerOrders")
-  sellOrders OrderBook[] @relation("SellerOrders")
+  id       BigInt @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
 
   createdAt DateTime  @default(now()) @db.Timestamp(6)
   updatedAt DateTime? @updatedAt @db.Timestamp(6)
@@ -28,24 +35,58 @@ model User {
   @@map("users")
 }
 
+model Balance {
+  id      BigInt @id @default(autoincrement())
+  user_id BigInt
+
+  eth_balance   String
+  usd_balance   String
+  kanch_balance String
+
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @updatedAt @db.Timestamp(6)
+  deletedAt DateTime? @db.Timestamp(6)
+
+  @@map("balances")
+}
+
 model OrderBook {
-  id       BigInt @id @default(autoincrement())
-  buyer    User   @relation("BuyerOrders", fields: [buyer_id], references: [id])
-  buyer_id BigInt
+  id      BigInt  @id @default(autoincrement())
+  user_id BigInt?
 
-  seller    User   @relation("SellerOrders", fields: [seller_id], references: [id])
-  seller_id BigInt
+  asset_pair    Asset_Pair @relation(fields: [asset_pair_id], references: [id])
+  asset_pair_id BigInt
 
-  currency       String
+  currency       String?
   quantity       String
   price          String
   status         String
-  order_catagory String
-  order_type     String
+  order_catagory String? // (buy/sell)
+  order_type     String? // (limit/market)
 
   createdAt DateTime  @default(now()) @db.Timestamp(6)
   updatedAt DateTime? @updatedAt @db.Timestamp(6)
   deletedAt DateTime? @db.Timestamp(6)
 
   @@map("orderBooks")
+}
+
+model Transaction {
+  id BigInt @id @default(autoincrement())
+
+  user_id      BigInt
+  orderBook_id BigInt
+
+  asset_pair String?
+  amount     String?
+  offerPrice String
+  tradePrice String
+  quantity   String
+  orderType  String?
+
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @updatedAt @db.Timestamp(6)
+  deletedAt DateTime? @db.Timestamp(6)
+
+  @@map("transactions")
 }

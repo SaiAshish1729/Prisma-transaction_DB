@@ -17,7 +17,7 @@ const server = Hapi.server({
 const init = async () => {
     const swaggerOptions = {
         info: {
-            title: 'Order_DB API Documentation',
+            title: 'Kaanch_Exchange API Documentation',
             version: Pack.version,
         },
         schemes: ['http', 'https'],

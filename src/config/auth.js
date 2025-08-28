@@ -13,7 +13,15 @@ const Authentication = async (req, h) => {
 
         const verifytoken = jwt.verify(token, SECRET);
 
-        const rootUser = await prisma.user.findFirst({ where: { email: verifytoken.email } });
+        const rootUser = await prisma.user.findFirst({
+            where: {
+                email: verifytoken.email
+            },
+            // include: {
+            //     buyOrders: true,
+            //     sellOrders: true
+            // },
+        });
 
         if (!rootUser) {
             return h.response({ message: "Unauthorized User!" }).code(401).takeover();
