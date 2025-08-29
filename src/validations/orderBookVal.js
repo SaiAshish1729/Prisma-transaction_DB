@@ -3,7 +3,7 @@ const { ORDER_TYPE } = require('../utills');
 
 const createOrderValidation = {
     payload: Joi.object({
-        asset_pair: Joi.string().required().label('asset_pair'),
+        asset_pair_id: Joi.number().required().label('asset_pair_id'),
         quantity: Joi.string().required().label('quantity'),
         currency: Joi.string().required().label('currency'),
         price: Joi.string().required().label('price'),

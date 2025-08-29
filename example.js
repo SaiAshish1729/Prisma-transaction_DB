@@ -4,3 +4,7 @@ const balanceColumnMap = {
     "ETH": "eth_balance",
     "KANCH": "kanch_balance"
 };
+
+module.exports = {
+    balanceColumnMap
+}

@@ -6,6 +6,7 @@ const ORDER_CATAGORY = {
 const ORDER_BOOK_STATUS = {
     COMPLETED: "completed",
     PENDING: "pending",
+    OPEN: "open"
 }
 
 const ORDER_TYPE = {
