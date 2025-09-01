@@ -4,7 +4,7 @@ const prisma = require("../config/DbConfig");
 const getInitialBalances = () => {
     const balances = {};
     SUPPORTED_ASSETS.forEach(asset => {
-        balances[asset] = "0";
+        balances[asset] = "500";
     });
     return balances;
 }

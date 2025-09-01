@@ -9,9 +9,8 @@ datasource db {
 }
 
 model Asset_Pair {
-  id         BigInt  @id @default(autoincrement())
+  id         BigInt @id @default(autoincrement())
   asset_pair String
-  pair_slug  String?
 
   createdAt DateTime    @default(now()) @db.Timestamp(6)
   updatedAt DateTime?   @updatedAt @db.Timestamp(6)

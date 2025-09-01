@@ -3,10 +3,10 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient({
     // log: ['info', 'warn', 'error'],
     log: [
-        { level: 'query', emit: 'event' },
-        { level: 'error', emit: 'event' },
-        { level: 'warn', emit: 'event' },
-        { level: 'info', emit: 'event' }
+        // { level: 'query', emit: 'event' },
+        // { level: 'error', emit: 'event' },
+        // { level: 'warn', emit: 'event' },
+        // { level: 'info', emit: 'event' }
     ]
 })
 
