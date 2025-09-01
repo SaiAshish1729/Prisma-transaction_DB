@@ -39,9 +39,7 @@ model Balance {
   id      BigInt @id @default(autoincrement())
   user_id BigInt
 
-  eth_balance   String
-  usd_balance   String
-  kanch_balance String
+  balances Json
 
   createdAt DateTime  @default(now()) @db.Timestamp(6)
   updatedAt DateTime? @updatedAt @db.Timestamp(6)

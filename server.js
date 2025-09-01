@@ -5,7 +5,8 @@ const Inert = require('@hapi/inert');
 const Vision = require('@hapi/vision');
 const HapiSwagger = require('hapi-swagger');
 const Pack = require('./package');
-const baseRouter = require('./src/Routes')
+const baseRouter = require('./src/Routes');
+// const { assetPairSeeder } = require('./src/seeders/assetPairSeeder');
 // const userRoute = require("./Routes/UserRoute")
 
 

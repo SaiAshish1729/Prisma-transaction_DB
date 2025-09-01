@@ -1,6 +1,7 @@
 const prisma = require("../config/DbConfig")
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { getInitialBalances } = require("../utills/helper");
 const SECRET = process.env.SECRET
 
 const createUser = async (req, h) => {
@@ -16,13 +17,26 @@ const createUser = async (req, h) => {
             return h.response({ message: "This user already exists.Please login" }).code(403);
         }
         const hashedPassword = await bcrypt.hash(password, 6);
-        const user = await prisma.user.create({
-            data: {
-                name, email, password: hashedPassword
-            }
+        const result = await prisma.$transaction(async (tx) => {
+            const newUser = await tx.user.create({
+                data: {
+                    name,
+                    email,
+                    password: hashedPassword,
+                },
+            });
+
+            const balance = await tx.balance.create({
+                data: {
+                    user_id: newUser.id,
+                    balances: getInitialBalances(),
+                },
+            });
+
+            return { user: newUser, balance };
         });
 
-        return h.response({ success: true, message: "User created successfully", data: user }).code(201);
+        return h.response({ success: true, message: "User created successfully", data: result }).code(201);
     } catch (error) {
         console.error("CreateUser Error:", error.message, error.stack, error.code || "");
         return h.response({ message: "Something went wrong", error: error.message }).code(500);

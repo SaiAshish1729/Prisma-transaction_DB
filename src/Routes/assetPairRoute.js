@@ -1,6 +1,6 @@
 const controller = require("../controller/assetPair")
 const Joi = require('joi');
-const { createAssetPairValidation } = require("../validations/assetPairValidation");
+const { createAssetPairValidation, paginationValidation } = require("../validations/assetPairValidation");
 
 module.exports = [
     {
@@ -23,12 +23,21 @@ module.exports = [
     },
 
     {
-        method: 'POST',
+        method: 'GET',
         path: '/all-asset-pairs',
         options: {
             tags: ['api', 'Asset_Pair'],
             handler: controller.allAssetPairs,
             description: "All Asset Pairs",
+            validate: {
+                ...paginationValidation,
+                failAction: (request, h, err) => {
+                    const customErrorMessages = err.details.map(
+                        (detail) => detail.message
+                    );
+                    return h.response({ statusCode: 400, error: "Bad Request", message: customErrorMessages, }).code(400).takeover();
+                },
+            },
         },
     },
 

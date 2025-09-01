@@ -17,13 +17,35 @@ const createAssetPair = async (req, h) => {
 
 const allAssetPairs = async (req, h) => {
     try {
-        const allPairs = await prisma.asset_Pair.findMany({});
-        return h.response({ success: true, data: allPairs }).code(200);
+        const page = parseInt(req.query.page) || 1;
+        const limit = 100;
+        const skip = (page - 1) * limit;
+
+        const total = await prisma.asset_Pair.count();
+
+        const allPairs = await prisma.asset_Pair.findMany({
+            skip: skip,
+            take: limit,
+            orderBy: { id: "asc" }
+        });
+
+        return h.response({
+            success: true,
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit),
+            data: allPairs
+        })
+            .code(200);
     } catch (error) {
         console.log(error);
-        return h.response({ message: "Serevr error while fetching asset_pair", error }).code(500);
+        return h
+            .response({ message: "Server error while fetching asset_pair", error })
+            .code(500);
     }
-}
+};
+
 
 module.exports = {
     createAssetPair,

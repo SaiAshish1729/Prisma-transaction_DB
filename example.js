@@ -5,6 +5,7 @@ const balanceColumnMap = {
     "KANCH": "kanch_balance"
 };
 
+
 module.exports = {
     balanceColumnMap
 }

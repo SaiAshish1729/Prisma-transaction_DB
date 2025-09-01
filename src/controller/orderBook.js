@@ -11,16 +11,16 @@ const creatOrder = async (req, h) => {
                 user_id: user.id
             }
         });
+        console.log("userBalance:", userBalance)
         const assetPairExist = await prisma.asset_Pair.findFirst({
             where: {
                 id: asset_pair_id,
                 deletedAt: null
             }
-        })
+        });
         if (!assetPairExist) {
             return h.response({ message: "This asset pair does not exists" }).code(404);
         }
-        console.log("userBalance:", userBalance)
 
         let balanceField;
         if (order_catagory === ORDER_CATAGORY.SELL) {

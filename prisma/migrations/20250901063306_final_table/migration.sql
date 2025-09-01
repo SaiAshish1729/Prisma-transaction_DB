@@ -2,6 +2,7 @@
 CREATE TABLE `asset_pairs` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `asset_pair` VARCHAR(191) NOT NULL,
+    `pair_slug` VARCHAR(191) NULL,
     `createdAt` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `updatedAt` TIMESTAMP(6) NULL,
     `deletedAt` TIMESTAMP(6) NULL,
@@ -28,9 +29,7 @@ CREATE TABLE `users` (
 CREATE TABLE `balances` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `user_id` BIGINT NOT NULL,
-    `eth_balance` VARCHAR(191) NOT NULL,
-    `usd_balance` VARCHAR(191) NOT NULL,
-    `kanch_balance` VARCHAR(191) NOT NULL,
+    `balances` JSON NOT NULL,
     `createdAt` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `updatedAt` TIMESTAMP(6) NULL,
     `deletedAt` TIMESTAMP(6) NULL,

@@ -17,10 +17,6 @@ const Authentication = async (req, h) => {
             where: {
                 email: verifytoken.email
             },
-            // include: {
-            //     buyOrders: true,
-            //     sellOrders: true
-            // },
         });
 
         if (!rootUser) {
