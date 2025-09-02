@@ -2,7 +2,6 @@
 CREATE TABLE `asset_pairs` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `asset_pair` VARCHAR(191) NOT NULL,
-    `pair_slug` VARCHAR(191) NULL,
     `createdAt` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `updatedAt` TIMESTAMP(6) NULL,
     `deletedAt` TIMESTAMP(6) NULL,
@@ -70,6 +69,19 @@ CREATE TABLE `transactions` (
     `updatedAt` TIMESTAMP(6) NULL,
     `deletedAt` TIMESTAMP(6) NULL,
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `CentralizeBalances` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `user_id` BIGINT NOT NULL,
+    `balance` JSON NOT NULL,
+    `createdAt` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `updatedAt` TIMESTAMP(6) NULL,
+    `deletedAt` TIMESTAMP(6) NULL,
+
+    UNIQUE INDEX `CentralizeBalances_user_id_key`(`user_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

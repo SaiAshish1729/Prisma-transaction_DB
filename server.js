@@ -12,7 +12,7 @@ const baseRouter = require('./src/Routes');
 
 const server = Hapi.server({
     port: process.env.PORT || 5500,
-    host: process.env.HOST || 'localhost'
+    host: process.env.HOST || '0.0.0.0'
 });
 
 const init = async () => {

@@ -87,3 +87,16 @@ model Transaction {
 
   @@map("transactions")
 }
+
+model CentralizeBalance {
+  id BigInt @id @default(autoincrement())
+
+  user_id BigInt @unique()
+  balance Json
+
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @updatedAt @db.Timestamp(6)
+  deletedAt DateTime? @db.Timestamp(6)
+
+  @@map("CentralizeBalances")
+}
