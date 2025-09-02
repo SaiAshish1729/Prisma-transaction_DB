@@ -372,7 +372,13 @@ const creatOrder = async (req, h) => {
 
 const getOrderBookData = async (req, h) => {
     try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = 100;
+        const skip = (page - 1) * limit;
+        const total = await prisma.orderBook.count();
+
         const orders = await prisma.orderBook.findMany({
+            where: { status: { not: ORDER_BOOK_STATUS.COMPLETED } },
             include: {
                 asset_pair: {
                     select: {
@@ -380,9 +386,18 @@ const getOrderBookData = async (req, h) => {
                         asset_pair: true,
                     }
                 }
-            }
+            },
+            skip: skip,
+            take: limit,
+            orderBy: { id: "asc" }
         });
-        return h.response({ success: true, data: orders }).code(200);
+        return h.response({
+            success: true, page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit),
+            data: orders
+        }).code(200);
     } catch (error) {
         console.log(error);
         return h.response({ message: "Server error while fetching orders", error });
