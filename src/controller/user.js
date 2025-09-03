@@ -82,6 +82,7 @@ const myProfile = async (req, h) => {
         return h.response({ message: "Something went wrong", error: error }).code(500);
     }
 }
+
 module.exports = {
     createUser,
     userLogin,

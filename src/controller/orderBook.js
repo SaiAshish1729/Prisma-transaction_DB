@@ -27,9 +27,7 @@ const creatOrder = async (req, h) => {
 
         if (order_catagory === ORDER_CATAGORY.SELL) {
             if (Number(quantity) > Number(balances[base])) {
-                return h.response({
-                    message: `You don't have sufficient ${base} balance to create this sell order.`
-                }).code(400);
+                return h.response({ message: `You don't have sufficient ${base} balance to create this sell order.` }).code(400);
             }
             // 1️ Create SELL order
             let newSellOrder = await prisma.orderBook.create({
@@ -45,7 +43,8 @@ const creatOrder = async (req, h) => {
                 }
             });
             // store centralize balance
-            let totalDeposit = quantity * price;
+            // let totalDeposit = quantity * price;
+            let totalDeposit = quantity;
             const deductBalance = await prisma.balance.update({
                 where: { id: userBalance.id, user_id: user.id },
                 data: {
@@ -81,7 +80,6 @@ const creatOrder = async (req, h) => {
                 });
             }
 
-
             // 2️ Find best BUY order (highest price, open, matching asset_pair)
             const bestBuyOrder = await prisma.orderBook.findFirst({
                 where: {
@@ -93,7 +91,7 @@ const creatOrder = async (req, h) => {
                 },
                 orderBy: { price: "desc" }
             });
-            console.log("bestBuyOrder:", bestBuyOrder);
+            // console.log("bestBuyOrder:", bestBuyOrder);
 
             if (!bestBuyOrder) {
                 return h.response({ success: true, data: newSellOrder }).code(201);
@@ -191,8 +189,6 @@ const creatOrder = async (req, h) => {
 
             return h.response({ success: true, data: result }).code(201);
         }
-
-
 
         if (order_catagory === ORDER_CATAGORY.BUY) {
             let neededBalance = quantity * price;
@@ -361,7 +357,6 @@ const creatOrder = async (req, h) => {
 
             return h.response({ success: true, data: result }).code(201);
         }
-
 
 
     } catch (error) {
